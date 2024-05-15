@@ -29,6 +29,14 @@ mongoose
   .then(console.log("Connected to mogoDB Atlas"))
   .catch((error) => console.log(error));
 
+router.get("/", (req, resp)=>{
+  try {
+    resp.send("hello dinesh, Is production of done ")
+  } catch (error) {
+    console.log("error")
+  }
+})  
+
 router.get("/", async(req, resp)=>{
    try {
     resp.send("hello dinesh")
