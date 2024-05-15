@@ -28,6 +28,15 @@ mongoose
   })
   .then(console.log("Connected to mogoDB Atlas"))
   .catch((error) => console.log(error));
+
+router.get("/", async(req, resp)=>{
+   try {
+    resp.send("hello dinesh")
+   } catch (error) {
+    console.log("error")
+   }
+})
+
 router.get("/get", async (req, res, next) => {
   try {
     const userdata = await User.find();
@@ -70,7 +79,7 @@ router.post("/login", async (req, res) => {
     return { status: true, message:"Login success", token, username:User}
 
   } catch (e) {
-    console.log("err");
+    // console.log("err");
     return {status:false, data: null, message: "Fail to login"}
   }
 });
