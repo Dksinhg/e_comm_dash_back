@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken')
 // require("./database/config");
 const User = require("./database/user");
 const Companylist = require("./database/companylist");
@@ -64,8 +65,13 @@ router.post("/login", async (req, res) => {
     } else {
       res.send({ result: "data is not found" });
     }
+
+    let token = jwt.sign({_id: User._id  }, process.env.JWT_SCERET)
+    return { status: true, message:"Login success", token, username:User}
+
   } catch (e) {
     console.log("err");
+    return {status:false, data: null, message: "Fail to login"}
   }
 });
 
@@ -89,8 +95,9 @@ router.get("/companylist", async (req, res) => {
 router.delete("/companylist/:id", async (req, res) => {
   let result = await Companylist.deleteOne({ _id: req.params.id });
   res.send(result);
-}),
-  router.get("/companylist/:id", async (req, res) => {
+})
+
+router.get("/companylist/:id", async (req, res) => {
     let result = await Companylist.findOne({ _id: req.params.id });
     if (result) {
       res.send(result);
@@ -126,6 +133,6 @@ router.get("/search/:key", async (req, resp) => {
 
 app.use(router);
 
-app.listen(port, () => {
-  console.log(`Server runinng on ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server runinng on ${PORT}`);
 });
